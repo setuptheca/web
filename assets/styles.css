@@ -141,6 +141,7 @@ html[data-theme="dark"] .theme-moon { display: block; }
 .secondary-main { flex: 1; padding-top: 52px; padding-bottom: 110px; }
 .back-link { display: inline-block; color: var(--muted); font-size: 13px; font-weight: 600; margin: 0 0 72px; }
 .back-link:hover { color: var(--accent); }
+.socials-root .back-link { margin-bottom: 36px; }
 .secondary-main .eyebrow { margin-bottom: 18px; }
 .secondary-title { max-width: 760px; font-size: clamp(36px, 5vw, 52px); line-height: 1.15; letter-spacing: -.045em; margin: 0; }
 .secondary-description { max-width: 620px; margin: 17px 0 42px; color: var(--muted); line-height: 1.7; }
@@ -215,6 +216,7 @@ html[data-theme="dark"] .social-logo img.social-logo-dark { display: block; }
   .social-grid { grid-template-columns: 1fr; }
   .secondary-main { padding-top: 28px; padding-bottom: 80px; }
   .back-link { margin-bottom: 50px; }
+  .socials-root .back-link { margin-bottom: 26px; }
   .donation-panel { flex-wrap: wrap; padding: 21px; }
   .donation-action { width: 100%; justify-content: center; margin-left: 0; }
   .footer-inner { min-height: 85px; flex-wrap: wrap; justify-content: flex-start; gap: 0 20px; padding: 22px 0; }
