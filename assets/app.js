@@ -1,4 +1,4 @@
-import { CATEGORIES, filterAndSortArticles, localize } from "./catalog.mjs";
+import { articleCategories, availableCategories, filterAndSortArticles, localize } from "./catalog.mjs";
 
 const DICTIONARY = {
   en: {
@@ -17,7 +17,7 @@ const DICTIONARY = {
     loadErrorDescription: "Please refresh the page and try again.",
     count: (matching, total) => `${matching} of ${total} ${total === 1 ? "article" : "articles"}`,
     minRead: n => `${n} min read`,
-    categories: { all: "All topics", development: "Development", applications: "Applications", extensions: "Extensions", systems: "Operating systems", security: "Security" },
+    allCategories: "All topics",
     backToGuides: "← Back to articles", connectKicker: "STAY CONNECTED",
     socialsTitle: "Other platforms and projects.",
     socialsDescription: "Our channels, communities, and projects about software and customization.",
@@ -40,7 +40,7 @@ const DICTIONARY = {
     loadErrorDescription: "Обнови страницу и попробуй ещё раз.",
     count: (matching, total) => `${matching} из ${total} ${pluralRu(total, ["статьи", "статей", "статей"])}`,
     minRead: n => `${n} мин чтения`,
-    categories: { all: "Все темы", development: "Разработка", applications: "Программы", extensions: "Расширения", systems: "Операционные системы", security: "Безопасность" },
+    allCategories: "Все темы",
     backToGuides: "← Ко всем статьям", connectKicker: "НА СВЯЗИ",
     socialsTitle: "Другие платформы и проекты.",
     socialsDescription: "Наши каналы, сообщества и проекты о программах и их настройке.",
@@ -102,7 +102,7 @@ const page = document.body.dataset.page || "catalog";
 const state = {
   locale: getStored("setuptheca.locale", "en") === "ru" ? "ru" : "en",
   theme: getStored("setuptheca.theme.v2", "dark") === "light" ? "light" : "dark",
-  articles: [], query: "", category: "all", sort: "newest", visible: 12, loadFailed: false
+  articles: [], query: "", selectedCategories: new Set(), sort: "newest", visible: 12, loadFailed: false
 };
 
 function getStored(key, fallback) {
@@ -141,6 +141,7 @@ function setTheme(theme) {
 }
 
 function setLanguage(locale) {
+  if (state.locale !== locale) state.selectedCategories.clear();
   state.locale = locale;
   document.documentElement.lang = locale;
   setStored("setuptheca.locale", locale);
@@ -172,6 +173,10 @@ function formatDate(iso) {
   }).format(date);
 }
 
+function visibleArticles() {
+  return state.articles.filter(article => !article.language || article.language === "both" || article.language === state.locale);
+}
+
 function createCover(article, index = 0) {
   if (article.coverImage) {
     const media = el('div', 'card-media has-cover-image');
@@ -192,7 +197,7 @@ function createCover(article, index = 0) {
   icon.innerHTML = `${STROKE_SVG_OPEN}${ICONS[article.icon] || ICONS.code}</svg>`;
   middle.append(icon);
   const bottom = el("div", "cover-bottom");
-  bottom.append(el("span", "", `${article.category.toUpperCase()} / ${article.date.slice(0, 4)}`));
+  bottom.append(el("span", "", `${articleCategories(article).join(" · ").toUpperCase()} / ${article.date.slice(0, 4)}`));
   const star = el("span", "cover-spark");
   star.innerHTML = STAR_SVG;
   bottom.append(star);
@@ -207,7 +212,7 @@ function createCard(article, index) {
   anchor.setAttribute("aria-label", localize(article.title, state.locale));
   anchor.append(createCover(article, index));
   const body = el("div", "card-body");
-  body.append(el("p", "card-category", t("categories")[article.category] || article.category));
+  body.append(el("p", "card-category", articleCategories(article).join(" · ")));
   body.append(el("h3", "card-title", localize(article.title, state.locale)));
   body.append(el("p", "card-description", localize(article.description, state.locale)));
   const meta = el("div", "card-meta");
@@ -227,23 +232,40 @@ function createCard(article, index) {
 function renderCategories() {
   const filters = document.getElementById("categoryFilters");
   if (!filters) return;
-  const nodes = CATEGORIES.map(category => {
-    const button = el("button", "category-button", t("categories")[category]);
+  const categories = availableCategories(visibleArticles(), state.locale);
+  for (const selected of state.selectedCategories) {
+    if (!categories.includes(selected)) state.selectedCategories.delete(selected);
+  }
+  filters.hidden = categories.length === 0;
+  if (!categories.length) { filters.replaceChildren(); return; }
+
+  const all = el("button", "category-button", t("allCategories"));
+  all.type = "button";
+  all.setAttribute("aria-pressed", String(state.selectedCategories.size === 0));
+  all.addEventListener("click", () => {
+    state.selectedCategories.clear(); state.visible = 12;
+    renderCategories(); renderCatalog();
+  });
+  const nodes = categories.map(category => {
+    const button = el("button", "category-button", category);
     button.type = "button";
-    button.setAttribute("aria-pressed", String(state.category === category));
-    button.addEventListener("click", () => { state.category = category; state.visible = 12; renderCategories(); renderCatalog(); });
+    button.setAttribute("aria-pressed", String(state.selectedCategories.has(category)));
+    button.addEventListener("click", () => {
+      if (state.selectedCategories.has(category)) state.selectedCategories.delete(category);
+      else state.selectedCategories.add(category);
+      state.visible = 12; renderCategories(); renderCatalog();
+    });
     return button;
   });
-  filters.replaceChildren(...nodes);
+  filters.replaceChildren(all, ...nodes);
 }
 
 function renderCatalog() {
   const grid = document.getElementById("cardsGrid");
   if (!grid) return;
-  const available = state.articles.filter(article => !article.language || article.language === 'both' || article.language === state.locale);
+  const available = visibleArticles();
   const matches = filterAndSortArticles(available, {
-    query: state.query, category: state.category, sort: state.sort,
-    locale: state.locale, categoryNames: t("categories")
+    query: state.query, categories: [...state.selectedCategories], sort: state.sort, locale: state.locale
   });
   document.getElementById("resultsCount").textContent = t("count")(matches.length, available.length);
   const empty = document.getElementById("emptyState");
@@ -251,7 +273,7 @@ function renderCatalog() {
   empty.hidden = matches.length > 0 && !state.loadFailed;
   more.hidden = matches.length <= state.visible;
   const reset = document.getElementById("resetFilters");
-  reset.hidden = !(state.query || state.category !== "all") || state.loadFailed;
+  reset.hidden = !(state.query || state.selectedCategories.size > 0) || state.loadFailed;
 
   if (!empty.hidden) {
     const isNoGuides = !available.length && !state.loadFailed;
@@ -304,7 +326,7 @@ async function loadArticles() {
     console.error("Could not load the article catalog:", error);
     state.loadFailed = true;
   }
-  if (page === "catalog") renderCatalog();
+  if (page === "catalog") { renderCategories(); renderCatalog(); }
 }
 
 function initialize() {
@@ -320,7 +342,7 @@ function initialize() {
     document.getElementById("sortSelect").addEventListener("change", event => { state.sort = event.target.value; renderCatalog(); });
     document.getElementById("loadMoreButton").addEventListener("click", () => { state.visible += 9; renderCatalog(); });
     document.getElementById("resetFilters").addEventListener("click", () => {
-      search.value = ""; state.query = ""; state.category = "all"; state.visible = 12;
+      search.value = ""; state.query = ""; state.selectedCategories.clear(); state.visible = 12;
       renderCategories(); renderCatalog(); search.focus();
     });
     document.addEventListener("keydown", event => {

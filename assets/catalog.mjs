@@ -1,5 +1,3 @@
-export const CATEGORIES = ["all", "development", "applications", "extensions", "systems", "security"];
-
 export function localize(value, locale = "en") {
   if (typeof value === "string") return value;
   if (!value || typeof value !== "object") return "";
@@ -15,10 +13,21 @@ export function normalizeSearch(value) {
     .trim();
 }
 
-export function filterAndSortArticles(articles, { query = "", category = "all", sort = "newest", locale = "en", categoryNames = {} } = {}) {
+export function articleCategories(article) {
+  const categories = Array.isArray(article.categories) ? article.categories : (article.category ? [article.category] : []);
+  return [...new Set(categories.filter(value => typeof value === "string").map(value => value.trim()).filter(Boolean))];
+}
+
+export function availableCategories(articles, locale = "en") {
+  return [...new Set(articles.flatMap(articleCategories))].sort((a, b) => a.localeCompare(b, locale));
+}
+
+export function filterAndSortArticles(articles, { query = "", categories = [], sort = "newest", locale = "en" } = {}) {
   const words = normalizeSearch(query).split(/\s+/).filter(Boolean);
+  const selected = new Set(categories);
   const filtered = articles.filter(article => {
-    if (category !== "all" && article.category !== category) return false;
+    const articleCategoryNames = articleCategories(article);
+    if (selected.size > 0 && !articleCategoryNames.some(category => selected.has(category))) return false;
     if (!words.length) return true;
 
     const searchable = normalizeSearch([
@@ -26,7 +35,7 @@ export function filterAndSortArticles(articles, { query = "", category = "all", 
       localize(article.description, locale),
       localize(article.title, locale === "ru" ? "en" : "ru"),
       localize(article.description, locale === "ru" ? "en" : "ru"),
-      categoryNames[article.category] || article.category,
+      ...articleCategoryNames,
       ...(Array.isArray(article.tags) ? article.tags : [])
     ].join(" "));
 
