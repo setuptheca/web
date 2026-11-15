@@ -20,8 +20,7 @@ const DICTIONARY = {
     minRead: n => `${n} min read`,
     allCategories: "All topics",
     backToGuides: "← Back to articles",
-    socialsTitle: "Other platforms and projects.",
-    socialsDescription: "Our channels, communities, and projects about software and customization.",
+    socialsTitle: "Other project platforms.",
     pageTitles: { catalog: "Articles", socials: "Socials" },
     themeToDark: "Switch to dark theme", themeToLight: "Switch to light theme"
   },
@@ -43,8 +42,7 @@ const DICTIONARY = {
     minRead: n => `${n} мин чтения`,
     allCategories: "Все темы",
     backToGuides: "← Ко всем статьям",
-    socialsTitle: "Другие платформы и проекты.",
-    socialsDescription: "Наши каналы, сообщества и проекты о программах и их настройке.",
+    socialsTitle: "Другие платформы проекта.",
     pageTitles: { catalog: "Статьи", socials: "Соцсети" },
     themeToDark: "Включить тёмную тему", themeToLight: "Включить светлую тему"
   }

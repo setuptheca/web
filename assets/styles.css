@@ -149,7 +149,7 @@ html[data-theme="dark"] .theme-moon { opacity: 1; }
 .socials-root .back-link { margin-bottom: 36px; }
 .secondary-main .eyebrow { margin-bottom: 18px; }
 .secondary-title { max-width: 760px; font-size: clamp(36px, 5vw, 52px); line-height: 1.15; letter-spacing: -.045em; margin: 0; }
-.secondary-description { max-width: 620px; margin: 17px 0 42px; color: var(--muted); line-height: 1.7; }
+.socials-root .secondary-title { margin-bottom: 42px; }
 .social-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
 .social-card { min-width: 0; padding: 22px; display: flex; align-items: center; gap: 16px; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; transition: border-color .16s; }
 .social-card:hover { border-color: var(--accent); }
@@ -219,6 +219,7 @@ html[data-theme="dark"] .social-logo img.social-logo-dark { opacity: 1; }
   .cover-symbol { width: 88px; height: 88px; }
   .card-media { padding: 18px 22px; }
   .social-grid { grid-template-columns: 1fr; }
+  .socials-root .secondary-title { margin-bottom: 30px; }
   .secondary-main { padding-top: 28px; padding-bottom: 80px; }
   .back-link { margin-bottom: 50px; }
   .socials-root .back-link { margin-bottom: 26px; }
