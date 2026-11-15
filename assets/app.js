@@ -1,4 +1,5 @@
 import { articleCategories, availableCategories, filterAndSortArticles, localize } from "./catalog.mjs";
+import { animateThemeChange } from "./theme-transition.mjs";
 
 const DICTIONARY = {
   en: {
@@ -331,7 +332,9 @@ async function loadArticles() {
 
 function initialize() {
   document.getElementById("copyrightYear").textContent = new Date().getFullYear();
-  document.getElementById("themeButton")?.addEventListener("click", () => setTheme(state.theme === "light" ? "dark" : "light"));
+  document.getElementById("themeButton")?.addEventListener("click", () => {
+    animateThemeChange(() => setTheme(state.theme === "light" ? "dark" : "light"));
+  });
   for (const button of document.querySelectorAll(".language-button")) {
     button.addEventListener("click", () => setLanguage(button.dataset.lang));
   }

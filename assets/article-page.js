@@ -1,3 +1,5 @@
+import { animateThemeChange } from './theme-transition.mjs';
+
 const pageLocale = document.body.dataset.articleLocale || 'en';
 let theme = 'dark';
 try {
@@ -15,9 +17,11 @@ function applyTheme() {
 applyTheme();
 
 document.getElementById('themeButton')?.addEventListener('click', () => {
-  theme = theme === 'dark' ? 'light' : 'dark';
-  try { localStorage.setItem('setuptheca.theme.v2', theme); } catch { /* Ignore. */ }
-  applyTheme();
+  animateThemeChange(() => {
+    theme = theme === 'dark' ? 'light' : 'dark';
+    try { localStorage.setItem('setuptheca.theme.v2', theme); } catch { /* Ignore. */ }
+    applyTheme();
+  });
 });
 
 document.querySelectorAll('.language-button').forEach(button => button.addEventListener('click', () => {

@@ -28,6 +28,11 @@ html[data-theme="dark"] {
 *, *::before, *::after { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
 html.socials-root { scrollbar-gutter: stable; }
+html.theme-changing, html.theme-changing *, html.theme-changing *::before, html.theme-changing *::after {
+  transition-property: color, background-color, border-color, opacity, fill, stroke, box-shadow;
+  transition-duration: 320ms;
+  transition-timing-function: ease;
+}
 body { margin: 0; min-height: 100vh; display: flex; flex-direction: column; color: var(--text); background: var(--background); font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif; font-size: 16px; line-height: 1.55; }
 a { color: inherit; text-decoration: none; }
 button, input, select { font: inherit; }
@@ -46,9 +51,9 @@ button:disabled { cursor: not-allowed; }
 .brand { display: inline-flex; gap: 10px; align-items: center; min-width: 0; flex-shrink: 0; }
 .brand-icon { position: relative; width: 54px; height: 54px; display: block; flex-shrink: 0; overflow: hidden; border-radius: 6px; }
 .brand-image { position: absolute; top: -3px; left: -3px; width: 60px; height: 60px; }
-.logo-dark { display: none; }
-html[data-theme="dark"] .logo-light { display: none; }
-html[data-theme="dark"] .logo-dark { display: block; }
+.logo-dark { opacity: 0; }
+html[data-theme="dark"] .logo-light { opacity: 0; }
+html[data-theme="dark"] .logo-dark { opacity: 1; }
 .brand-name { font-weight: 700; font-size: 21px; line-height: 1.2; letter-spacing: -.035em; white-space: nowrap; }
 .header-nav { display: flex; align-items: center; gap: 21px; }
 .nav-link { font-size: 14px; font-weight: 600; color: var(--muted); transition: color .16s; }
@@ -60,12 +65,12 @@ html[data-theme="dark"] .logo-dark { display: block; }
 .language-button { min-width: 35px; padding: 5px 6px; border: 0; border-radius: 5px; background: transparent; color: var(--muted); font-size: 12px; line-height: 1.4; font-weight: 700; }
 .language-button[aria-pressed="true"] { color: var(--on-accent); background: var(--accent); }
 .language-divider { display: none; }
-.theme-button { width: 38px; height: 38px; display: grid; place-items: center; padding: 0; border: 1px solid var(--border); background: var(--surface); border-radius: 8px; color: var(--text); }
+.theme-button { position: relative; width: 38px; height: 38px; display: grid; place-items: center; padding: 0; border: 1px solid var(--border); background: var(--surface); border-radius: 8px; color: var(--text); }
 .theme-button:hover { border-color: var(--accent); color: var(--accent); }
-.theme-button svg { width: 19px; height: 19px; }
-.theme-moon { display: none; }
-html[data-theme="dark"] .theme-sun { display: none; }
-html[data-theme="dark"] .theme-moon { display: block; }
+.theme-button svg { position: absolute; inset: 0; margin: auto; width: 19px; height: 19px; pointer-events: none; }
+.theme-moon { opacity: 0; }
+html[data-theme="dark"] .theme-sun { opacity: 0; }
+html[data-theme="dark"] .theme-moon { opacity: 1; }
 
 /* Compact catalog introduction */
 .intro { padding: 35px 0 22px; }
@@ -150,9 +155,9 @@ html[data-theme="dark"] .theme-moon { display: block; }
 .social-card:hover { border-color: var(--accent); }
 .social-logo { position: relative; display: block; height: 52px; width: 52px; flex-shrink: 0; }
 .social-logo img { position: absolute; inset: 0; display: block; width: 100%; height: 100%; }
-.social-logo img.social-logo-dark { display: none; }
-html[data-theme="dark"] .social-logo img.social-logo-light { display: none; }
-html[data-theme="dark"] .social-logo img.social-logo-dark { display: block; }
+.social-logo img.social-logo-dark { opacity: 0; }
+html[data-theme="dark"] .social-logo img.social-logo-light { opacity: 0; }
+html[data-theme="dark"] .social-logo img.social-logo-dark { opacity: 1; }
 .social-content { min-width: 0; flex: 1; }
 .social-content strong { display: block; font-size: 15px; }
 .social-content span { display: block; margin-top: 2px; color: var(--muted); font-size: 12px; overflow-wrap: anywhere; }
@@ -227,6 +232,12 @@ html[data-theme="dark"] .social-logo img.social-logo-dark { display: block; }
   .support-link { gap: 5px; padding: 7px 8px; }
   .brand-name { font-size: 18px; }
   .sort-group { width: 100%; justify-content: space-between; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html.theme-changing, html.theme-changing *, html.theme-changing *::before, html.theme-changing *::after {
+    transition: none;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
