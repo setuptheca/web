@@ -68,13 +68,13 @@ const CALENDAR_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
 const CLOCK_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>';
 
 const SOCIALS = [
-  { platform: "YouTube", handle: "@setuptheca", language: "en", code: "YT", url: "https://www.youtube.com/@setuptheca" },
-  { platform: "YouTube", handle: "@настротека", language: "ru", code: "YT", url: "https://www.youtube.com/@%D0%BD%D0%B0%D1%81%D1%82%D1%80%D0%BE%D1%82%D0%B5%D0%BA%D0%B0" },
-  { platform: "Telegram", handle: "@setuptheca", language: "en", code: "TG", url: "https://t.me/setuptheca" },
-  { platform: "Telegram", handle: "@nastroteka", language: "ru", code: "TG", url: "https://t.me/nastroteka" },
-  { platform: "RUTUBE", handle: "Настротека", language: "ru", code: "R", url: "https://rutube.ru/channel/83173107/" },
-  { platform: "VK", handle: "Настротека", language: "ru", code: "VK", url: "https://vk.ru/nastroteka" },
-  { platform: "Дзен", handle: "Настротека", language: "ru", code: "Д", url: "https://dzen.ru/id/6af8e65e7987140c761d5514" }
+  { platform: "YouTube", handle: "@setuptheca", language: "en", icon: "youtube", url: "https://www.youtube.com/@setuptheca" },
+  { platform: "YouTube", handle: "@настротека", language: "ru", icon: "youtube", url: "https://www.youtube.com/@%D0%BD%D0%B0%D1%81%D1%82%D1%80%D0%BE%D1%82%D0%B5%D0%BA%D0%B0" },
+  { platform: "Telegram", handle: "@setuptheca", language: "en", icon: "telegram", url: "https://t.me/setuptheca" },
+  { platform: "Telegram", handle: "@nastroteka", language: "ru", icon: "telegram", url: "https://t.me/nastroteka" },
+  { platform: "RUTUBE", handle: "Настротека", language: "ru", icon: "rutube", url: "https://rutube.ru/channel/83173107/" },
+  { platform: "VK", handle: "Настротека", language: "ru", icon: "vk", url: "https://vk.ru/nastroteka" },
+  { platform: "Дзен", handle: "Настротека", language: "ru", icon: "dzen", url: "https://dzen.ru/id/6af8e65e7987140c761d5514" }
 ];
 
 const COVERS_RU = {
@@ -272,7 +272,17 @@ function renderSocials() {
     link.target = "_blank";
     link.rel = "noopener noreferrer";
     link.setAttribute("aria-label", `${social.platform}, ${social.handle}`);
-    link.append(el("span", "social-monogram", social.code));
+    const logo = el("span", "social-logo");
+    for (const theme of ["light", "dark"]) {
+      const image = el("img", `social-logo-${theme}`);
+      image.src = `./assets/socials/${social.icon}-${theme}.svg`;
+      image.alt = "";
+      image.width = 52;
+      image.height = 52;
+      image.setAttribute("aria-hidden", "true");
+      logo.append(image);
+    }
+    link.append(logo);
     const body = el("span", "social-content");
     body.append(el("strong", "", social.platform), el("span", "", social.handle));
     link.append(body);

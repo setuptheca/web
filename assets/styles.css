@@ -144,7 +144,11 @@ html[data-theme="dark"] .theme-moon { display: block; }
 .social-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
 .social-card { min-width: 0; padding: 22px; display: flex; align-items: center; gap: 16px; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; transition: border-color .16s; }
 .social-card:hover { border-color: var(--accent); }
-.social-monogram { display: grid; place-items: center; height: 52px; width: 52px; flex-shrink: 0; border-radius: 8px; background: var(--accent-soft); color: var(--accent); font-weight: 700; font-size: 20px; }
+.social-logo { position: relative; display: block; height: 52px; width: 52px; flex-shrink: 0; }
+.social-logo img { position: absolute; inset: 0; display: block; width: 100%; height: 100%; }
+.social-logo img.social-logo-dark { display: none; }
+html[data-theme="dark"] .social-logo img.social-logo-light { display: none; }
+html[data-theme="dark"] .social-logo img.social-logo-dark { display: block; }
 .social-content { min-width: 0; flex: 1; }
 .social-content strong { display: block; font-size: 15px; }
 .social-content span { display: block; margin-top: 2px; color: var(--muted); font-size: 12px; overflow-wrap: anywhere; }
