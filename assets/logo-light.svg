@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1254" height="1254" viewBox="0 0 1254 1254" role="img" aria-labelledby="title desc">
+  <title id="title">Настротека / Setuptheca — светлая версия логотипа</title>
+  <desc id="desc">Тёмная дискета с увеличенной четырёхлучевой звездой Paper Blue на однотонном светлом фоне.</desc>
+  <rect width="1254" height="1254" fill="#F5F3ED"/>
+  <g transform="translate(-37 -33.5)">
+    <g fill="#202530">
+      <path d="M 460 413 H 876 Q 887 413 897 423 L 976 502 Q 982 508 982 521 V 930 Q 982 975 937 975 H 465 Q 420 975 420 930 V 458 Q 420 413 460 413 Z" fill="none" stroke="#202530" stroke-width="30" stroke-linejoin="round"/>
+      <path d="M 530 413 H 856 V 563 Q 856 599 820 599 H 566 Q 530 599 530 563 Z"/>
+      <rect x="740" y="436" width="78" height="133" rx="17" fill="#F5F3ED"/>
+      <rect x="479" y="650" width="443" height="273" rx="39"/>
+    </g>
+    <path d="M 420 192 L 462 371 L 641 413 L 462 455 L 420 634 L 378 455 L 199 413 L 378 371 Z" fill="#315EC7"/>
+  </g>
+</svg>
+

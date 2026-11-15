@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" color="#315EC7" role="img" aria-labelledby="title desc">
+  <title id="title">Настротека / Setuptheca — четырёхлучевая звезда</title>
+  <desc id="desc">Фирменная геометрическая четырёхлучевая звезда.</desc>
+  <path d="M 256 34 L 300 212 L 478 256 L 300 300 L 256 478 L 212 300 L 34 256 L 212 212 Z" fill="currentColor"/>
+</svg>
+

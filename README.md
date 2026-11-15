@@ -1,33 +1,35 @@
-# Setuptheca website
+# Setuptheca / Настротека
 
-Static, bilingual Setuptheca / Настротека website for GitHub Pages.
+This repository contains the **built, static website** ready for GitHub Pages. The Astro project and editable article sources are maintained separately in the private project repository.
 
-## Preview locally
+## Enable GitHub Pages
 
-Run a static HTTP server in this directory, for example:
+1. Open **Settings → Pages**.
+2. Under **Build and deployment**, set **Source** to **Deploy from a branch**.
+3. Select branch `main` and folder `/ (root)`.
+4. Click **Save**.
+
+The project-site URL will be [https://setuptheca.github.io/web/](https://setuptheca.github.io/web/) once GitHub finishes publishing.
+
+## Current content
+
+- `index.html`: bilingual article catalog, initially empty
+- `socials.html`: links to other platforms and projects
+- `data/articles.json`: currently `{"articles":[]}`
+- `assets/`: JavaScript, styles and graphics
+- `sitemap.xml`: current public URLs
+
+The website starts in dark mode, supports a light-mode switch, and uses the star favicon. No example articles or downloadable article files are published.
+
+## Updating articles
+
+Add the article's Markdown, images and downloadable files to the Astro source project, set `draft: false`, and rebuild with:
 
 ```bash
-python3 -m http.server 8000
+SITE_BASE=/web/ npm run build
+npm run test
 ```
 
-Then open <http://localhost:8000/>. Opening `index.html` directly from the file system will not load the JSON catalog in most browsers.
+Copy **the contents of `dist/`** into the root of this repository, keeping `.nojekyll` and this README. Commit the updated site files and push to `main`.
 
-## Content
-
-`data/articles.json` contains the catalog. It currently includes **18 illustrative demo articles** so the layout, scrolling, language switching, search, sorting, category filtering, and load-more control can be tested. The linked article pages are explicitly labeled as previews, not published guides.
-
-Before going live with real articles:
-
-1. Replace the demo entries with actual article metadata, or change `"demo": true` to `false` when every entry has a real destination.
-2. For each real article, provide its `id`, `date` (ISO `YYYY-MM-DD`), `category`, `minutes`, localized `title` and `description`, and optional `tags`, `cover`, `icon`, and `style`.
-3. Update the card URL handling in `assets/app.js` when actual guide pages are available. Demo cards currently open `article.html?id=...`.
-
-All public pages are deliberately static and require no server, database, or paid API. The only persisted state is the visitor's optional language and color-theme preference in local storage.
-
-## GitHub Pages
-
-Under the repository's **Settings → Pages**, choose **Deploy from a branch**, branch `main`, folder `/ (root)`. The canonical project-site path will normally be `https://setuptheca.github.io/web/` unless a custom domain is configured.
-
-Use relative paths (`./assets/…`) so the pages work in the `/web/` subpath.
-
-Brand assets `logo-light.svg`, `logo-dark.svg`, and `star.svg` are adapted from the project's existing private brand files. The color tokens match the project's Paper Blue design system.
+Do not edit generated HTML to add articles: the source project creates matching RU/EN article pages and the JSON catalog automatically.
